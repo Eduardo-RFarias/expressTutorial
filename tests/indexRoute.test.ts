@@ -6,9 +6,3 @@ test("[GET] /", async () => {
   expect(res.status).toBe(200);
   expect(res.text).toBe("Home page");
 });
-
-test("[GET] /about", async () => {
-  const res = await req(server).get("/about");
-  expect(res.status).toBe(200);
-  expect(res.text).toBe("About");
-});

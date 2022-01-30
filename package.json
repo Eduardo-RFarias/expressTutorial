@@ -3,16 +3,21 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --watch 'src/' --exec 'yarn run lint:src && ts-node src/app.ts' -e ts",
+    "start": "DEBUG=expresstutorial:* nodemon --watch 'src/' --exec 'yarn run lint:src && ts-node src/app.ts' -e ts",
     "start:deploy": "node build/app.js",
     "test": "yarn run lint:tests && jest",
-    "build": "tsc && babel src --out-dir build --extensions \".ts,.tsx\"",
+    "build": "babel src --out-dir build --extensions \".ts,.tsx\"",
     "format": "prettier --write .",
     "lint:src": "eslint 'src/**'",
     "lint:tests": "eslint 'tests/**'"
   },
   "dependencies": {
-    "express": "~4.17.2"
+    "cookie-parser": "~1.4.6",
+    "debug": "~4.3.3",
+    "dotenv": "~14.3.2",
+    "express": "~4.17.2",
+    "http-errors": "~2.0.0",
+    "morgan": "~1.10.0"
   },
   "devDependencies": {
     "@babel/cli": "~7.16.8",
@@ -20,8 +25,12 @@
     "@babel/node": "~7.16.8",
     "@babel/preset-env": "~7.16.11",
     "@babel/preset-typescript": "~7.16.7",
+    "@types/cookie-parser": "~1.4.2",
+    "@types/debug": "~4.1.7",
     "@types/express": "~4.17.13",
+    "@types/http-errors": "~1.8.2",
     "@types/jest": "~27.4.0",
+    "@types/morgan": "~1.9.3",
     "@types/node": "~17.0.13",
     "@types/supertest": "~2.0.11",
     "@typescript-eslint/eslint-plugin": "~5.10.1",
