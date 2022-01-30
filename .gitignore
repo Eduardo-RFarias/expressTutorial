@@ -59,3 +59,12 @@ typings/
 
 # next.js build output
 .next
+
+# typescript emited files
+dist/
+
+# test reports
+coverage/
+
+#vscode folders
+.vscode/
