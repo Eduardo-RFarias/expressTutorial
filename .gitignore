@@ -61,7 +61,7 @@ typings/
 .next
 
 # typescript emited files
-dist/
+build/
 
 # test reports
 coverage/
