@@ -1,10 +1,12 @@
 import express from "express";
-import controller from "../controllers/apiController";
+import todoRoutes from "./api/TodoRoute";
 
 const router = express.Router();
 
-router.get("/", controller.index);
+router.get("/", (req, res) => {
+  res.send("API Root");
+});
 
-router.get("/search/:id", controller.search);
+router.use("/todo", todoRoutes);
 
 export default router;

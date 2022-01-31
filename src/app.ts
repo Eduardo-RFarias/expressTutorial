@@ -3,6 +3,7 @@ import http from "http";
 import dotenv from "dotenv";
 
 import expressServer from "./server";
+import connect from "./db/connect";
 
 /**
  * * Read the .env file in root
@@ -53,11 +54,6 @@ expressServer.set("port", port);
 const httpServer = http.createServer(expressServer);
 
 /**
- * * Listen on provided port, on all network interfaces.
- */
-httpServer.listen(port);
-
-/**
  * * Listen for errors and log it in a friendly way
  */
 httpServer.on("error", (error: HttpServerError) => {
@@ -99,3 +95,29 @@ httpServer.on("listening", () => {
   const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
 });
+
+/**
+ * * Create a function to start the database connection first and then listen the httpServer
+ */
+const startup = async () => {
+  const url = process.env.DATABASE_URL;
+
+  if (!url) {
+    debug("Could not find DATABASE_URL in the environment variables.");
+    process.exit(1);
+  }
+
+  try {
+    await connect(url);
+  } catch (error) {
+    debug(`Could not connect to the database. ERROR: ${error}`);
+    process.exit(1);
+  }
+
+  httpServer.listen(port);
+};
+
+/**
+ * * Finally, let's start the server
+ */
+startup();

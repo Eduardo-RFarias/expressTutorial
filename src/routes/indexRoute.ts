@@ -1,8 +1,9 @@
 import express from "express";
-import controller from "../controllers/indexController";
 
 const router = express.Router();
 
-router.get("/", controller.index);
+router.get("/", (req, res) => {
+  res.send("Express Todo App");
+});
 
 export default router;
