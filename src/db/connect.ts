@@ -20,5 +20,3 @@ const connect = async () => {
 };
 
 export default connect;
-
-// ! If you're looking for the database connection process check the app.ts in src root.

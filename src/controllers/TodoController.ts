@@ -11,7 +11,7 @@ const list: express.RequestHandler = async (req, res) => {
     return res.json(todos);
   } catch (error) {
     debug(error);
-    return res.status(500).json({ success: false, msg: "Unknown error" });
+    return res.status(500).send("Unknown error");
   }
 };
 
@@ -21,7 +21,12 @@ const create: express.RequestHandler = async (req, res) => {
     return res.status(201).json(todo);
   } catch (error) {
     debug(error);
-    return res.status(500).json({ success: false, msg: "Unknown error" });
+
+    if (error instanceof Error && error.message.startsWith("Todo validation failed")) {
+      return res.status(400).send(error.message);
+    }
+
+    return res.status(500).send("Unknown error");
   }
 };
 
@@ -33,30 +38,40 @@ const retrieve: express.RequestHandler = async (req, res) => {
       return res.json(todo);
     }
 
-    return res.status(404).json({ success: false, msg: "Todo not found with given id" });
+    return res.status(404).send("Todo not found with given id");
   } catch (error) {
     debug(error);
-    return res.status(500).json({ success: false, msg: "Unknown error" });
+    return res.status(500).send("Unknown error");
   }
 };
 
 const update: express.RequestHandler = async (req, res) => {
   try {
     const todo = await Todo.findByIdAndUpdate(req.params.id, req.body);
-    return res.json(todo);
+
+    if (todo) {
+      return res.json(todo);
+    }
+
+    return res.status(404).send("Todo not found with given id");
   } catch (error) {
     debug(error);
-    return res.status(500).json({ success: false, msg: "Unknown error" });
+    return res.status(500).send("Unknown error");
   }
 };
 
 const destroy: express.RequestHandler = async (req, res) => {
   try {
-    await Todo.findByIdAndDelete(req.params.id);
-    return res.status(204).send();
+    const todo = await Todo.findByIdAndDelete(req.params.id);
+
+    if (todo) {
+      return res.status(204).send();
+    }
+
+    return res.status(404).send("Todo not found with given id");
   } catch (error) {
     debug(error);
-    return res.status(500).json({ success: false, msg: "Unknown error" });
+    return res.status(500).send("Unknown error");
   }
 };
 
