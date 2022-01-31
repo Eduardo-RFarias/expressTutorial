@@ -100,20 +100,7 @@ httpServer.on("listening", () => {
  * * Create a function to start the database connection first and then listen the httpServer
  */
 const startup = async () => {
-  const url = process.env.DATABASE_URL;
-
-  if (!url) {
-    debug("Could not find DATABASE_URL in the environment variables.");
-    process.exit(1);
-  }
-
-  try {
-    await connect(url);
-  } catch (error) {
-    debug(`Could not connect to the database. ERROR: ${error}`);
-    process.exit(1);
-  }
-
+  await connect();
   httpServer.listen(port);
 };
 
